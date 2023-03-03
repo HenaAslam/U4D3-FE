@@ -8,10 +8,10 @@ const BlogList = (props) => {
   const [posts, setPosts] = useState([]);
   const fetchPosts = async () => {
     try {
-      let response = await fetch("http://localhost:3001/blogs");
+      let response = await fetch("http://localhost:3001/blogs/");
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+
         setPosts(data);
       } else {
         console.log("error");
@@ -25,17 +25,17 @@ const BlogList = (props) => {
   }, []);
   return (
     <Row>
-      {posts &&
-        posts.map((post) => (
-          <Col
-            md={4}
-            style={{
-              marginBottom: 50,
-            }}
-          >
-            <BlogItem key={post.title} {...post} />
-          </Col>
-        ))}
+      {posts.map((post) => (
+        <Col
+          md={4}
+          style={{
+            marginBottom: 50,
+          }}
+          key={post.id}
+        >
+          <BlogItem key={post.title} {...post} />
+        </Col>
+      ))}
     </Row>
   );
 };
