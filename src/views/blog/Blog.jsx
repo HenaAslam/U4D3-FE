@@ -7,6 +7,8 @@ import {
   Spinner,
   Form,
   Button,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
@@ -21,7 +23,30 @@ const Blog = (props) => {
     author: "",
     text: "",
   });
-  const handleSubmit = (e) => {};
+  const { id } = params;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendNewComment();
+  };
+  const sendNewComment = async () => {
+    try {
+      let response = await fetch(`http://localhost:3001/blogs/${id}/comments`, {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        fetchPost(id);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchPost = async (id) => {
     try {
       let response = await fetch("http://localhost:3001/blogs/" + id);
@@ -38,7 +63,6 @@ const Blog = (props) => {
   };
 
   useEffect(() => {
-    const { id } = params;
     fetchPost(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -58,7 +82,12 @@ const Blog = (props) => {
         {blog ? (
           <div className="blog-details-root">
             <Container>
-              <Image className="blog-details-cover" src={blog.cover} fluid />
+              <Row className="justify-content-center">
+                <Col xs={12} sm={6}>
+                  <Image className="blog-details-cover" src={blog.cover} />
+                </Col>
+              </Row>
+
               <h1 className="blog-details-title">{blog.title}</h1>
               <h4>{blog.category}</h4>
 
@@ -87,7 +116,6 @@ const Blog = (props) => {
                 }}
               ></div>
               <h5 className="mt-5">Comments</h5>
-              {console.log(blog.comments)}
 
               {blog.comments ? (
                 <ListGroup>

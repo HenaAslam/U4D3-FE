@@ -46,14 +46,15 @@ const NewBlogPost = (props) => {
       });
 
       if (response.ok) {
-        alert("blog added");
         let data = response.json();
+
         return data;
       } else {
         alert("problem posting blog");
+        console.log(response);
       }
     } catch (error) {
-      console.log(error);
+      console.log();
     }
   };
   const handleSubmit = async (e) => {
