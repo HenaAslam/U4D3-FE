@@ -5,7 +5,10 @@ import { Button, Container, Form } from "react-bootstrap";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./styles.css";
+
 const NewBlogPost = (props) => {
+  const [fileForCover, setFileForCover] = useState([]);
+
   const [newBlog, setNewBlog] = useState({
     category: "",
     title: "",
@@ -27,6 +30,9 @@ const NewBlogPost = (props) => {
   //   let html = convertToHTML(editorState.getCurrentContent());
   //   setHTML(html);
   // }, [editorState]);
+  const uploadCover = (e) => {
+    setFileForCover([...fileForCover, e.target.files[0]]);
+  };
 
   const sendNewBlog = async () => {
     try {
@@ -38,11 +44,47 @@ const NewBlogPost = (props) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
+
       if (response.ok) {
         alert("blog added");
+        let data = response.json();
+        return data;
       } else {
         alert("problem posting blog");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let createdBlog = await sendNewBlog();
+    console.log(createdBlog);
+
+    console.log("file", fileForCover);
+    if (fileForCover) {
+      newCoverUpload(fileForCover[0], createdBlog.id);
+    }
+  };
+  const newCoverUpload = async (file, id) => {
+    try {
+      console.log(file, id);
+      const formData = new FormData();
+      formData.append("cover", file);
+
+      let response = await fetch(
+        `http://localhost:3001/blogs/${id}/uploadCover`,
+
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      console.log(response);
+      if (response.ok) {
+        console.log("You made it!");
+      } else {
+        console.log("Try harder!");
       }
     } catch (error) {
       console.log(error);
@@ -51,14 +93,7 @@ const NewBlogPost = (props) => {
 
   return (
     <Container className="new-blog-container">
-      <Form
-        className="mt-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-
-          sendNewBlog();
-        }}
-      >
+      <Form className="mt-5" onSubmit={handleSubmit}>
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -87,7 +122,7 @@ const NewBlogPost = (props) => {
             }}
           />
         </Form.Group>
-        <Form.Group controlId="blog-form" className="mt-3">
+        {/* <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Cover</Form.Label>
           <Form.Control
             size="lg"
@@ -100,7 +135,7 @@ const NewBlogPost = (props) => {
               });
             }}
           />
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Read time value</Form.Label>
           <Form.Control
@@ -169,7 +204,7 @@ const NewBlogPost = (props) => {
           /> */}
           <Form.Control
             size="lg"
-            placeholder="avatar"
+            placeholder="content"
             value={newBlog.content}
             onChange={(e) => {
               setNewBlog({
@@ -178,6 +213,10 @@ const NewBlogPost = (props) => {
               });
             }}
           />
+        </Form.Group>
+        <Form.Group controlId="blog-content" className="mt-3">
+          <Form.Label>Choose blog cover</Form.Label>
+          <Form.Control type="file" onChange={uploadCover} />
         </Form.Group>
 
         <Form.Group className="d-flex mt-3 justify-content-end">

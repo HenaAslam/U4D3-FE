@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Image } from "react-bootstrap";
+import {
+  Container,
+  Image,
+  ListGroup,
+  ListGroupItem,
+  Spinner,
+  Form,
+  Button,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
@@ -9,7 +17,11 @@ const Blog = (props) => {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
-
+  const [newComment, setNewComment] = useState({
+    author: "",
+    text: "",
+  });
+  const handleSubmit = (e) => {};
   const fetchPost = async (id) => {
     try {
       let response = await fetch("http://localhost:3001/blogs/" + id);
@@ -17,7 +29,6 @@ const Blog = (props) => {
         let data = await response.json();
 
         setBlog(data);
-        console.log(data);
       } else {
         console.log("error");
       }
@@ -49,6 +60,7 @@ const Blog = (props) => {
             <Container>
               <Image className="blog-details-cover" src={blog.cover} fluid />
               <h1 className="blog-details-title">{blog.title}</h1>
+              <h4>{blog.category}</h4>
 
               <div className="blog-details-container">
                 <div className="blog-details-author">
@@ -56,7 +68,9 @@ const Blog = (props) => {
                 </div>
                 <div className="blog-details-info">
                   <div>{blog.createdAt}</div>
-                  {/* <div>{`${blog.readTime.value} ${blog.readTime.unit} read`}</div> */}
+                  <div>
+                    {blog.readTime?.value} {blog.readTime?.unit} read
+                  </div>
                   <div
                     style={{
                       marginTop: 20,
@@ -72,6 +86,60 @@ const Blog = (props) => {
                   __html: blog.content,
                 }}
               ></div>
+              <h5 className="mt-5">Comments</h5>
+              {console.log(blog.comments)}
+
+              {blog.comments ? (
+                <ListGroup>
+                  {blog.comments.length > 0 ? (
+                    blog.comments.map((c) => (
+                      <ListGroupItem key={c.id}>
+                        {c.text} -- {c.author}
+                      </ListGroupItem>
+                    ))
+                  ) : (
+                    <p>No comments yet</p>
+                  )}
+                </ListGroup>
+              ) : (
+                <Spinner animation="border" variant="success" />
+              )}
+              <h6 className="mt-5">Add new comment</h6>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="blog-form" className="mt-3">
+                  <Form.Label>name</Form.Label>
+                  <Form.Control
+                    size="md"
+                    className="w-50"
+                    placeholder="name"
+                    value={newComment.author}
+                    onChange={(e) => {
+                      setNewComment({
+                        ...newComment,
+                        author: e.target.value,
+                      });
+                    }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="blog-form" className="mt-3">
+                  <Form.Label>comment</Form.Label>
+                  <Form.Control
+                    size="md"
+                    className="w-50"
+                    placeholder="comment"
+                    value={newComment.text}
+                    onChange={(e) => {
+                      setNewComment({
+                        ...newComment,
+                        text: e.target.value,
+                      });
+                    }}
+                  />
+                </Form.Group>
+                <Button type="submit" size="sm" variant="dark" className="mt-2">
+                  Submit
+                </Button>
+              </Form>
             </Container>
           </div>
         ) : (
