@@ -60,7 +60,7 @@ const NewBlogPost = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let createdBlog = await sendNewBlog();
-    console.log(createdBlog);
+    console.log("blog", createdBlog);
 
     console.log("file", fileForCover);
     if (fileForCover) {
@@ -84,6 +84,7 @@ const NewBlogPost = (props) => {
       console.log(response);
       if (response.ok) {
         console.log("You made it!");
+        alert("blog added");
       } else {
         console.log("Try harder!");
       }
