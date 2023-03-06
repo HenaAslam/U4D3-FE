@@ -36,7 +36,7 @@ const NewBlogPost = (props) => {
 
   const sendNewBlog = async () => {
     try {
-      let response = await fetch("http://localhost:3001/blogs/", {
+      let response = await fetch(`http://localhost:3001/blogs/`, {
         method: "POST",
         body: JSON.stringify(newBlog),
 

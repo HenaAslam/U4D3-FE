@@ -49,7 +49,7 @@ const Blog = (props) => {
 
   const fetchPost = async (id) => {
     try {
-      let response = await fetch("http://localhost:3001/blogs/" + id);
+      let response = await fetch(`http://localhost:3001/blogs/` + id);
       if (response.ok) {
         let data = await response.json();
 
