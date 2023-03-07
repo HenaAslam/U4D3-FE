@@ -74,7 +74,7 @@ const NewBlogPost = (props) => {
       formData.append("cover", file);
 
       let response = await fetch(
-        `http://localhost:3001/blogs/${id}/uploadCover`,
+        `${process.env.REACT_APP_BE_URL}/blogs/${id}/uploadCover`,
 
         {
           method: "POST",
