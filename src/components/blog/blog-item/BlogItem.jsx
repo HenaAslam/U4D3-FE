@@ -15,6 +15,12 @@ const BlogItem = (props) => {
         </Card.Body>
         <Card.Footer>
           <BlogAuthor {...author} />
+          <a
+            onClick={(e) => e.stopPropagation()}
+            href={`${process.env.REACT_APP_BE_URL}/blogs/${id}/pdf`}
+          >
+            download PDF
+          </a>
         </Card.Footer>
       </Card>
     </Link>
