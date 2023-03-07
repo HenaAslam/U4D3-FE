@@ -25,7 +25,7 @@ const BlogList = (props) => {
   const fetchpostBytitle = async () => {
     try {
       let response = await fetch(
-        `http://localhost:3001/blogs?title=${postBytitle}`
+        `${process.env.REACT_APP_BE_URL}/blogs?title=${postBytitle}`
       );
       if (response.ok) {
         let data = await response.json();
