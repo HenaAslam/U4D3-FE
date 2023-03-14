@@ -120,7 +120,7 @@ const Blog = (props) => {
               ></div>
               <h5 className="mt-5">Comments</h5>
 
-              {blog.comments ? (
+              {/* {blog.comments ? (
                 <ListGroup>
                   {blog.comments.length > 0 ? (
                     blog.comments.map((c) => (
@@ -134,7 +134,7 @@ const Blog = (props) => {
                 </ListGroup>
               ) : (
                 <Spinner animation="border" variant="success" />
-              )}
+              )} */}
               <h6 className="mt-5">Add new comment</h6>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="blog-form" className="mt-3">
