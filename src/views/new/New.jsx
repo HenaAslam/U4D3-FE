@@ -64,8 +64,8 @@ const NewBlogPost = (props) => {
 
     console.log("file", fileForCover);
     if (fileForCover) {
-      console.log(createdBlog._id);
-      // newCoverUpload(fileForCover[0], createdBlog._id);
+      console.log("iddddddddddd", createdBlog._id);
+      newCoverUpload(fileForCover[0], createdBlog._id);
     }
   };
   const newCoverUpload = async (file, id) => {
