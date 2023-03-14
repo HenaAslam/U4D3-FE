@@ -65,34 +65,34 @@ const NewBlogPost = (props) => {
     console.log("file", fileForCover);
     if (fileForCover) {
       console.log("idddddddddddddd", createdBlog._id);
-      // newCoverUpload(fileForCover[0], createdBlog._id);
+      newCoverUpload(fileForCover[0], createdBlog._id);
     }
   };
-  // const newCoverUpload = async (file, id) => {
-  //   try {
-  //     console.log(file, id);
-  //     const formData = new FormData();
-  //     formData.append("cover", file);
+  const newCoverUpload = async (file, id) => {
+    try {
+      console.log(file, id);
+      const formData = new FormData();
+      formData.append("cover", file);
 
-  //     let response = await fetch(
-  //       `${process.env.REACT_APP_BE_URL}/blogs/${id}/uploadCover`,
+      let response = await fetch(
+        `${process.env.REACT_APP_BE_URL}/blogs/${id}/uploadCover`,
 
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-  //     console.log(response);
-  //     if (response.ok) {
-  //       console.log("You made it!");
-  //       alert("blog added");
-  //     } else {
-  //       console.log("Try harder!");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      console.log(response);
+      if (response.ok) {
+        console.log("You made it!");
+        alert("blog added");
+      } else {
+        console.log("Try harder!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container className="new-blog-container">
