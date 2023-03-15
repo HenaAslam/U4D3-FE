@@ -13,6 +13,7 @@ const BlogList = (props) => {
       let response = await fetch(`${process.env.REACT_APP_BE_URL}/blogs/`);
       if (response.ok) {
         let data = await response.json();
+        console.log(data);
 
         setPosts(data);
       } else {
