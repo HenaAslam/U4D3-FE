@@ -10,12 +10,16 @@ const BlogList = (props) => {
   const [titleResults, settitleResults] = useState([]);
   const fetchPosts = async () => {
     try {
-      let response = await fetch(`${process.env.REACT_APP_BE_URL}/blogs/`);
+      let response = await fetch(`${process.env.REACT_APP_BE_URL}/blogs/`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       if (response.ok) {
         let data = await response.json();
         console.log(data);
 
-        setPosts(data);
+        setPosts(data.blogs);
       } else {
         console.log("error");
       }
